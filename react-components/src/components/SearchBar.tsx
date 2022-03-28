@@ -32,7 +32,9 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
           onChange={(eve) => this.getValue(eve)}
           placeholder="Search something"
           className="form-control"
+          onSubmit={(eve) => console.log(eve)}
         />
+        <button className="btn btn-primary">Search</button>
       </div>
     );
   }
