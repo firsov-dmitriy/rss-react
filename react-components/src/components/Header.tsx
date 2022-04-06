@@ -61,6 +61,11 @@ class Header extends Component<HeaderProps, HeaderState> {
                   NonPage
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to={'form'}>
+                  Form
+                </NavLink>
+              </li>
             </ul>
             <form className="d-flex" onSubmit={(eve) => this.handlerSubmit(eve)}>
               <input

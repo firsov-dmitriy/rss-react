@@ -1,0 +1,10 @@
+.container-input{
+    display: flex;
+    justify-content: space-around;
+}
+.form__item{
+    width: 50%;
+}
+.form__item:last-child{
+    margin-left: 10px;
+}
