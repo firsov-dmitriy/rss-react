@@ -1,20 +1,21 @@
-import { stat } from 'fs';
-import React, { Component } from 'react';
+import { throws } from 'assert';
+import React, { Component, JSXElementConstructor, ReactElement, useImperativeHandle } from 'react';
+import CardList from './CardList';
+import CardListPerson from './CardListPerson';
 import CardPerson from './CardPerson';
+
 import './form.css';
-interface FormState {
-  correctValue: boolean;
-  errorValue: { data: string };
+import Persona from './Persona';
+import { dirtyType, personType, selectType } from './types';
+
+export interface FormState {
+  errorValue: { data: string; name: string; secName: string; processing: string };
   file: string | File;
   imagePrevieUrl: string | ArrayBuffer | null;
   buttDisable: boolean;
-}
-interface personType {
-  name: string | undefined;
-  secName: string | undefined;
-  date: string | undefined;
-  prom: boolean | undefined;
-  url: string | undefined;
+  dirty: dirtyType;
+  validation: boolean | undefined;
+  listPerson: personType[];
 }
 class Form extends Component<object, FormState> {
   nameRef: React.RefObject<HTMLInputElement>;
@@ -22,128 +23,230 @@ class Form extends Component<object, FormState> {
   dateRef: React.RefObject<HTMLInputElement>;
   promRef: React.RefObject<HTMLInputElement>;
   imgRef: React.RefObject<HTMLInputElement> | undefined;
-  fileUrl: string | undefined;
+  person: personType;
+  formRef: React.RefObject<HTMLFormElement>;
+  select: [selectType, selectType, selectType];
+  buttRef: React.RefObject<HTMLButtonElement>;
+  checkedRef: React.RefObject<HTMLInputElement>;
+  list: personType[];
 
   constructor(props: object) {
     super(props);
     this.state = {
-      correctValue: false,
-
+      validation: false,
       errorValue: {
-        data: 'Error date',
+        data: 'date is empty or you are under 6  years',
+        name: 'Name is empty',
+        secName: 'Second name is empty',
+        processing: 'Еhis is a mandatory item',
       },
       file: '',
       imagePrevieUrl: '',
-      buttDisable: false,
+      buttDisable: true,
+      dirty: {
+        name: false,
+        secName: false,
+        date: false,
+        processing: false,
+      },
+      listPerson: [],
     };
+
+    this.select = [
+      { id: 1, city: 'Kuiv' },
+      { id: 2, city: 'Kharkov' },
+      { id: 3, city: 'Lviv' },
+    ];
+    this.checkedRef = React.createRef();
     this.nameRef = React.createRef();
     this.secNameRef = React.createRef();
     this.dateRef = React.createRef();
     this.promRef = React.createRef();
     this.imgRef = React.createRef();
-    this.fileUrl = '';
+    this.formRef = React.createRef();
+    this.buttRef = React.createRef();
+
+    this.person = {
+      name: '',
+      secName: '',
+      date: '',
+      prom: false,
+      url: '',
+      select: '',
+      checked: false,
+      buttonWork: 0,
+    };
+    this.list = [];
   }
-  chekedDate(dateref: React.RefObject<HTMLInputElement>) {
-    const date = Date.parse(dateref.current?.value ? dateref.current.value : '');
-    const dateNow = new Date().toString();
-    console.log(date >= +dateNow);
 
-    if (date >= +dateNow) {
-      console.log(date >= +dateNow);
-
-      return <h1>{this.state.errorValue.data}</h1>;
+  onBlurSelect(eve: React.FocusEvent<HTMLSelectElement, Element>) {
+    if (+eve.target.value != 0) {
+      this.person.select = eve.target.value;
     } else {
-      return <h1>OK</h1>;
+      this.person.select = '';
     }
   }
+  onSubmit(eve: React.FormEvent<HTMLFormElement>) {
+    eve.preventDefault();
+    console.log(this.person);
 
-  chekedCorrect(date: string | undefined) {
-    let res = 1;
-    const nowDate = new Date();
-    const dateCheck = Date.parse(date ? date : 'Error');
-    if (!dateCheck || nowDate.getFullYear() >= +new Date(+dateCheck)) {
-      console.log(this.state.errorValue.data);
-    } else {
-      res *= 1;
+    this.setState({
+      validation: true && this.person.checked,
+      buttDisable: true,
+    });
+
+    this.formRef.current?.reset();
+  }
+
+  onBlur(eve: React.FocusEvent<HTMLInputElement, Element>) {
+    const person = this.person;
+    switch (eve.target.name) {
+      case 'name':
+        if (+eve.target.value.replace(/\s+/g, '') === 0) {
+          this.setState({
+            dirty: {
+              name: true,
+              secName: this.state.dirty.secName,
+              date: this.state.dirty.date,
+              processing: this.state.dirty.processing,
+            },
+          });
+        } else {
+          this.person.name = eve.target.value.replace(/\s+/g, '');
+
+          this.setState({
+            dirty: {
+              name: false,
+              secName: this.state.dirty.secName,
+              date: this.state.dirty.date,
+              processing: this.state.dirty.processing,
+            },
+          });
+        }
+
+        break;
+      case 'secName':
+        if (+eve.target.value.replace(/\s+/g, '') === 0) {
+          this.setState({
+            dirty: {
+              name: this.state.dirty.name,
+              secName: true,
+              date: this.state.dirty.date,
+              processing: this.state.dirty.processing,
+            },
+          });
+        } else {
+          this.person.secName = eve.target.value.replace(/\s+/g, '');
+          this.setState({
+            dirty: {
+              name: this.state.dirty.name,
+              secName: false,
+              date: this.state.dirty.date,
+              processing: this.state.dirty.processing,
+            },
+          });
+        }
+        break;
+      case 'file':
+        eve.preventDefault();
+
+        if (window.FileReader) {
+          const reader = new FileReader();
+          const file = eve.target.files![0];
+          if (file && file.type.match('image.*')) {
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.person.url = reader.result?.toString();
+            };
+            if (reader.error) {
+              console.error(reader.error);
+            }
+          }
+        }
+
+        break;
+
+      case 'date':
+        const dateNow = new Date();
+        const date = eve.target.valueAsDate?.getFullYear()
+          ? eve.target.valueAsDate.getFullYear()
+          : 0;
+
+        if (date !== 0 && date <= dateNow.getFullYear() - 6) {
+          this.person.date = date.toString();
+          this.setState({
+            dirty: {
+              name: this.state.dirty.name,
+              secName: this.state.dirty.secName,
+              date: false,
+              processing: this.state.dirty.processing,
+            },
+          });
+        } else {
+          this.setState({
+            dirty: {
+              name: this.state.dirty.name,
+              secName: this.state.dirty.secName,
+              date: true,
+              processing: this.state.dirty.processing,
+            },
+          });
+        }
+        break;
+      case 'promo':
+        this.person.prom = this.promRef.current?.checked;
+
+        break;
+      case 'processing':
+        this.person.checked = this.checkedRef.current?.checked;
+
+        break;
+
+      default:
+        break;
     }
-    console.log(res);
+    this.setState({
+      buttDisable: !Boolean(
+        person.name && person.secName && person.select && person.date && person.url
+      ),
+    });
   }
-  _handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-    console.log('handle uploading-', this.state.file);
-  }
-  handlerCreatCardPerson(perosn: personType) {
-    this.chekedCorrect(perosn.date);
-    return perosn;
-  }
-  _handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-
-    const reader = new FileReader();
-    const file = e.target.files![0];
-    let result;
-    reader.onloadend = () => {
-      this.fileUrl = reader.result?.toString();
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  createPerson = (
-    name: React.RefObject<HTMLInputElement>,
-    secName: React.RefObject<HTMLInputElement>,
-    date: React.RefObject<HTMLInputElement>,
-    prom: React.RefObject<HTMLInputElement>,
-    img: string | undefined
-  ) => {
-    const person = {
-      name: name.current?.value,
-      secName: secName.current?.value,
-      date: date.current?.value,
-      prom: prom.current?.checked,
-      url: img,
-    };
-    return person;
-  };
 
   render() {
-    const name = this.nameRef;
-    const secName = this.secNameRef;
-    const date = this.dateRef;
-    const prom = this.promRef;
-    const img = this.imgRef;
-    const url = this.fileUrl;
-
-    setInterval(() => {
-      return console.log(
-        this.handlerCreatCardPerson(this.createPerson(name, secName, date, prom, url))
-      );
-    }, 2000);
+    const person = new Persona(this.person);
+    console.log(person);
 
     return (
       <>
-        <form
-          onSubmit={(e) => {
-            this._handleSubmit(e);
-          }}
-        >
+        <form ref={this.formRef} onSubmit={(eve) => this.onSubmit(eve)}>
           <div className="container-input">
             <div className="mb-3 form__item">
               <label htmlFor="exampleInputEmail1" className="form-label">
                 Name
               </label>
-              <input type="text" className="form-control" ref={this.nameRef} />
+              {this.state.dirty.name && this.state.errorValue.name && (
+                <div style={{ color: 'red' }}>{this.state.errorValue.name}</div>
+              )}
+              <input
+                name="name"
+                onBlur={(eve) => this.onBlur(eve)}
+                className="form-control form-name"
+                ref={this.nameRef}
+              />
               <div id="emailHelp" className="form-text"></div>
             </div>
             <div className="mb-3 form__item">
               <label htmlFor="exampleInputPassword1" className="form-label">
                 Second Name
               </label>
+              {this.state.dirty.secName && this.state.errorValue && (
+                <div style={{ color: 'red' }}>{this.state.errorValue.secName}</div>
+              )}
               <input
+                onBlur={(eve) => this.onBlur(eve)}
                 type="text"
-                className="form-control"
-                id="exampleInputPassword1"
+                name="secName"
+                className="form-control form-second__name"
                 ref={this.secNameRef}
               />
             </div>
@@ -153,10 +256,12 @@ class Form extends Component<object, FormState> {
               File
             </label>
             <input
+              onBlur={(eve) => this.onBlur(eve)}
               type="file"
-              className="form-control"
+              name="file"
+              className="form-control form-file"
               accept="image/*"
-              onChange={(e) => this._handleImageChange(e)}
+              // onChange={(e) => this._handleImageChange(e)}
               ref={this.imgRef}
             />
             <div id="emailHelp" className="form-text"></div>
@@ -166,44 +271,32 @@ class Form extends Component<object, FormState> {
             <label htmlFor="exampleInputEmail1" className="form-label">
               Date of Birth
             </label>
-            {this.chekedDate(date)}
-            <input type="date" className="form-control" ref={this.dateRef} />
+            {this.state.dirty.date && this.state.errorValue.data && (
+              <div style={{ color: 'red' }}>{this.state.errorValue.data}</div>
+            )}
+            <input
+              type="date"
+              onBlur={(eve) => this.onBlur(eve)}
+              name="date"
+              className="form-control form-date"
+              ref={this.dateRef}
+            />
             <div id="emailHelp" className="form-text"></div>
           </div>
-          <div className="dropdown">
-            <a
-              className="btn btn-secondary dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Dropdown link
-            </a>
-
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li>
-                <a className="dropdown-item" href="#">
-                  Action
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Another action
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  Something else here
-                </a>
-              </li>
-            </ul>
-          </div>
+          <select className="form-select" onBlur={(eve) => this.onBlurSelect(eve)}>
+            <option value="0">Choose city</option>
+            {this.select.map((sel) => (
+              <option key={sel.id} value={sel.city}>
+                {sel.city}
+              </option>
+            ))}
+          </select>
 
           <div className="form-check form-switch">
             <input
-              className="form-check-input"
+              onBlur={(eve) => this.onBlur(eve)}
+              name="promo"
+              className="form-check-input form-prom"
               type="checkbox"
               id="flexSwitchCheckDefault"
               ref={this.promRef}
@@ -214,7 +307,10 @@ class Form extends Component<object, FormState> {
           </div>
           <div className="form-check">
             <input
-              className="form-check-input"
+              onBlur={(eve) => this.onBlur(eve)}
+              ref={this.checkedRef}
+              name="processing"
+              className="form-check-input form-prossec"
               type="checkbox"
               value=""
               id="flexCheckIndeterminate"
@@ -223,18 +319,27 @@ class Form extends Component<object, FormState> {
               Consent to data processing{' '}
             </label>
           </div>
-          <button type="submit" disabled={!this.state.buttDisable} className="btn btn-primary">
+          <button
+            type="submit"
+            ref={this.buttRef}
+            disabled={this.state.buttDisable}
+            className="btn btn-primary"
+          >
             Submit
           </button>
         </form>
         <div className="card_person">
-          <CardPerson
-            name="Dima"
-            secName="Firsov"
-            promotion={true}
-            DOB={Date.now().toString()}
-            dataProssc={true}
-          />
+          {this.state.validation && (
+            <CardListPerson
+              name={person.name}
+              secName={person.secName}
+              date={person.date}
+              prom={person.prom}
+              url={person.url}
+              select={person.select}
+              checked={person.checked}
+            ></CardListPerson>
+          )}
         </div>
       </>
     );

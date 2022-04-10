@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 interface CardPersonProps {
-  name: string;
-  secName: string;
-  DOB: string;
-  dataProssc: boolean;
-  promotion: boolean;
+  name: string | undefined;
+  secName: string | undefined;
+  DOB: string | undefined;
+  promotion?: boolean;
+  url?: string;
+  city: string | undefined;
 }
 interface CardPersonState {
   cardLike: number;
@@ -26,13 +27,12 @@ export default class CardPerson extends Component<CardPersonProps, CardPersonSta
   render() {
     return (
       <div className="card mt-3" style={{ width: '33%' }}>
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfe2gRmY2DDfOeZm5LXgrLZqy5V0eXqrscYA&usqp=CAU"
-          className="card-img-top"
-        />
+        <img src={this.props.url} className="card-img-top" />
         <div className="card-body">
-          <h5 className="card-title">Титульник</h5>
-          <p className="card-text">Описание</p>
+          <h5 className="card-title">
+            My name: {this.props.name} {this.props.secName}
+          </h5>
+          <p className="card-text"> I am from: {this.props.city}</p>
         </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">{this.props.name}</li>
