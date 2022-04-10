@@ -35,9 +35,7 @@ export default class CardPerson extends Component<CardPersonProps, CardPersonSta
           <p className="card-text"> I am from: {this.props.city}</p>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">{this.props.name}</li>
-          <li className="list-group-item">{this.props.secName}</li>
-          <li className="list-group-item">{this.props.DOB}</li>
+          <li className="list-group-item">year of birth {this.props.DOB}</li>
         </ul>
         <div className="card-doby">
           <div className="btn-group" role="group" aria-label="Basic mixed styles example">

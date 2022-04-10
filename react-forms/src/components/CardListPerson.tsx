@@ -33,7 +33,7 @@ export default class CardListPerson extends Component<Persona> {
             id: React.Key | null | undefined
           ) => (
             <CardPerson
-              key={id}
+              key={Date.now()}
               name={el.name}
               secName={el.secName}
               DOB={el.date}
