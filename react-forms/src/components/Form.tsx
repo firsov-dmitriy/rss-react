@@ -347,6 +347,7 @@ class Form extends Component<object, FormState> {
             Submit
           </button>
         </form>
+        <h3>CardPerson</h3>
         <section className="card_person">
           {this.state.validation && (
             <CardListPerson
