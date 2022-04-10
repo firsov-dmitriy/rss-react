@@ -27,7 +27,7 @@ export default class CardPerson extends Component<CardPersonProps, CardPersonSta
   render() {
     return (
       <div className="card mt-3" style={{ width: '33%' }}>
-        <img src={this.props.url} className="card-img-top" />
+        <img src={this.props.url} className="card-img-top" style={{ height: '200px' }} />
         <div className="card-body">
           <h5 className="card-title">
             My name: {this.props.name} {this.props.secName}

@@ -29,6 +29,7 @@ class Form extends Component<object, FormState> {
   buttRef: React.RefObject<HTMLButtonElement>;
   checkedRef: React.RefObject<HTMLInputElement>;
   list: personType[];
+  personObj: Persona;
 
   constructor(props: object) {
     super(props);
@@ -65,7 +66,16 @@ class Form extends Component<object, FormState> {
     this.imgRef = React.createRef();
     this.formRef = React.createRef();
     this.buttRef = React.createRef();
-
+    this.personObj = {
+      name: '',
+      secName: '',
+      date: '',
+      prom: false,
+      url: '',
+      select: '',
+      checked: false,
+      buttonWork: 0,
+    };
     this.person = {
       name: '',
       secName: '',
@@ -88,14 +98,27 @@ class Form extends Component<object, FormState> {
   }
   onSubmit(eve: React.FormEvent<HTMLFormElement>) {
     eve.preventDefault();
-    console.log(this.person);
-
+    console.log('create card');
+    this.personObj.name = this.person.name;
+    this.personObj.secName = this.person.secName;
+    this.personObj.date = this.person.date;
+    this.personObj.url = this.person.url;
+    this.personObj.select = this.person.select;
+    this.personObj.checked = this.person.checked;
+    this.personObj.prom = this.person.prom;
+    this.personObj.buttonWork = Date.now();
     this.setState({
       validation: true && this.person.checked,
-      buttDisable: true,
     });
 
     this.formRef.current?.reset();
+
+    // this.person.secName = '';
+    // this.person.date = '';
+    // this.person.url = '';
+    // this.person.select = '';
+    // this.person.checked = false;
+    // this.person.prom = false;
   }
 
   onBlur(eve: React.FocusEvent<HTMLInputElement, Element>) {
@@ -213,9 +236,6 @@ class Form extends Component<object, FormState> {
   }
 
   render() {
-    const person = new Persona(this.person);
-    console.log(person);
-
     return (
       <>
         <form ref={this.formRef} onSubmit={(eve) => this.onSubmit(eve)}>
@@ -261,7 +281,6 @@ class Form extends Component<object, FormState> {
               name="file"
               className="form-control form-file"
               accept="image/*"
-              // onChange={(e) => this._handleImageChange(e)}
               ref={this.imgRef}
             />
             <div id="emailHelp" className="form-text"></div>
@@ -328,19 +347,28 @@ class Form extends Component<object, FormState> {
             Submit
           </button>
         </form>
-        <div className="card_person">
+        <section className="card_person">
           {this.state.validation && (
             <CardListPerson
-              name={person.name}
-              secName={person.secName}
-              date={person.date}
-              prom={person.prom}
-              url={person.url}
-              select={person.select}
-              checked={person.checked}
+              // name={person.name}
+              // secName={person.secName}
+              // select={person.select}
+              // date={person.date}
+              // url={person.url}
+              // checked={person.checked}
+              // prom={person.prom}
+              // buttonWork={person.buttonWork}
+              buttonWork={this.personObj.buttonWork}
+              name={this.personObj.name}
+              secName={this.personObj.secName}
+              date={this.personObj.date}
+              prom={this.personObj.prom}
+              url={this.personObj.url}
+              select={this.personObj.select}
+              checked={this.personObj.checked}
             ></CardListPerson>
           )}
-        </div>
+        </section>
       </>
     );
   }

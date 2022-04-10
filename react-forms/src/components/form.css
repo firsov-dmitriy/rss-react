@@ -1,10 +1,15 @@
-.container-input{
-    display: flex;
-    justify-content: space-around;
+.container-input {
+  display: flex;
+  justify-content: space-around;
 }
-.form__item{
-    width: 50%;
+.form__item {
+  width: 50%;
 }
-.form__item:last-child{
-    margin-left: 10px;
+.form__item:last-child {
+  margin-left: 10px;
+}
+.card_person {
+  display: flex;
+
+  flex-wrap: wrap;
 }
