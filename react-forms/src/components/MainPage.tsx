@@ -1,56 +1,85 @@
 import React, { Component } from 'react';
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
+import Modal from './Modal/Modal';
 import { dataChatacters } from './types';
 interface MainPageState {
   data: dataChatacters[];
-  dataPage2: string;
+  modalTriger: boolean;
 }
 interface MainPageProps {
   valueSerch: string;
+  submit: boolean;
 }
 
 export default class MainPage extends Component<MainPageProps, MainPageState> {
   _isMounted: boolean;
+  api: serviceMorty;
   constructor(props: MainPageProps) {
     super(props);
     this.state = {
       data: [],
-      dataPage2: '',
+      modalTriger: false,
     };
     this._isMounted = false;
+    this.api = new serviceMorty();
+    this.onShowModalCard = this.onShowModalCard.bind(this);
   }
+  getCharacter(valueSerch: string) {
+    this.api.getCharacter(valueSerch).then((data) => {
+      console.log(data);
 
+      this.setState({
+        data: data.results,
+      });
+    });
+  }
+  componentDidUpdate(prev: MainPageProps) {
+    if (this.props.submit !== prev.submit) {
+      this.getCharacter(this.props.valueSerch);
+    }
+  }
+  onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    this.setState({
+      modalTriger: true,
+    });
+  }
   componentDidMount() {
-    const api = new serviceMorty();
     this._isMounted = true;
 
-    api.getCharacter(this.props.valueSerch).then((data) => {
+    this.api.getDataCharacters(`https://rickandmortyapi.com/api/character`).then((data) => {
       this._isMounted &&
         this.setState({
           data: data.results,
-          dataPage2: data.info.next,
         });
     });
   }
+  showModal(modalTriger: boolean) {
+    if (modalTriger) {
+    }
+  }
+
   componentWillUnmount() {
-    const api = new serviceMorty();
+    console.log('mount');
     this._isMounted = false;
-    api.getCharacter('https://rickandmortyapi.com/api/character?page=2').then((data) => {
+    this.api.getDataCharacters(`https://rickandmortyapi.com/api/character`).then((data) => {
       this._isMounted &&
         this.setState({
           data: data.results,
         });
     });
+    this.setState({});
   }
   render() {
+    this.props.submit;
     return (
       <>
         <CardList
-          datePage2={this.state.dataPage2}
+          onShowModalCard={this.onShowModalCard}
           data={this.state.data}
           valueSerch={this.props.valueSerch}
         />
+        <Modal modalTriger={this.state.modalTriger} />
       </>
     );
   }

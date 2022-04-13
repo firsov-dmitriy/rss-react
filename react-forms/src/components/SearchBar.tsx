@@ -6,6 +6,7 @@ type SearchBarState = {
 type SearchBarProps = {
   name?: string;
   getValue: (value: string) => void;
+  onSubmit: (submit: React.FormEvent<HTMLFormElement>) => void;
 };
 export default class SearchBar extends Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
@@ -28,7 +29,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
   render() {
     return (
       <>
-        <form className="d-flex" onSubmit={(eve) => this.handlerSubmit(eve)}>
+        <form className="d-flex" onSubmit={(eve) => this.props.onSubmit(eve)}>
           <input
             data-testid="PostContent"
             className="form-control me-2"

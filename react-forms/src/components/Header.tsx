@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import SearchBar from './SearchBar';
 interface HeaderProps {
   getValue: (value: string) => void;
+  onSubmit: (submit: React.FormEvent<HTMLFormElement>) => void;
 }
 interface HeaderState {
   value: string;
@@ -54,7 +55,7 @@ class Header extends Component<HeaderProps, HeaderState> {
                 </NavLink>
               </li>
             </ul>
-            <SearchBar getValue={this.props.getValue} />
+            <SearchBar getValue={this.props.getValue} onSubmit={this.props.onSubmit} />
           </div>
         </div>
       </nav>

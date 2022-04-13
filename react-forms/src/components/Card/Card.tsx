@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import { dataChatacters } from '../types';
 import './card.css';
-interface CardProps {
-  name: string;
-  status: string;
-  url: string;
+interface CardProps extends dataChatacters {
+  onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 interface CardState {
@@ -25,14 +24,19 @@ export default class Card extends Component<CardProps, CardState> {
 
   render() {
     return (
-      <div className="card mt-3">
-        <img src={this.props.url} className="card-img-top" />
+      <div
+        className="card mt-3"
+        onClick={(eve) => {
+          this.props.onShowModalCard(eve);
+        }}
+      >
+        <img src={this.props.image} className="card-img-top" />
         <div className="card-body">
-          <h5 className="card-title">Титульник</h5>
-          <p className="card-text">Описание</p>
+          <h5 className="card-title">{this.props.name}</h5>
+          <p className="card-text">{this.props.status}</p>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">{'Name: ' + this.props.name}</li>
+          <li className="list-group-item"></li>
           <li className="list-group-item"></li>
           <li className="list-group-item">Дата публикации</li>
         </ul>
@@ -79,3 +83,6 @@ export default class Card extends Component<CardProps, CardState> {
     );
   }
 }
+// function onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+//   throw new Error('Function not implemented.');
+// }
