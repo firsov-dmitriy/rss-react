@@ -1,4 +1,3 @@
-import { stat } from 'fs/promises';
 import React, { Component } from 'react';
 
 type SearchBarState = {
@@ -6,6 +5,7 @@ type SearchBarState = {
 };
 type SearchBarProps = {
   name?: string;
+  getValue: (value: string) => void;
 };
 export default class SearchBar extends Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
@@ -15,27 +15,33 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
     };
   }
   getValue(eve: React.ChangeEvent<HTMLInputElement>) {
-    this.setState(() => {
-      console.log(eve.target);
-
-      return { value: eve.target.value };
-    });
+    this.setState({ value: eve.target.value });
+  }
+  componentWillUnmount() {
+    localStorage.setItem('searchText', this.state.value);
+  }
+  handlerSubmit(eve: React.FormEvent<HTMLFormElement>) {
+    eve.preventDefault();
+    console.log('State', +this.state.value);
   }
 
   render() {
-    console.log(this.state.value);
-
     return (
-      <div>
-        <input
-          type="text"
-          onChange={(eve) => this.getValue(eve)}
-          placeholder="Search something"
-          className="form-control"
-          onSubmit={(eve) => console.log(eve)}
-        />
-        <button className="btn btn-primary">Search</button>
-      </div>
+      <>
+        <form className="d-flex" onSubmit={(eve) => this.handlerSubmit(eve)}>
+          <input
+            data-testid="PostContent"
+            className="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            onChange={(eve) => this.props.getValue(eve.target.value.toString())}
+          />
+          <button className="btn btn-outline-success" type="submit">
+            Search
+          </button>
+        </form>
+      </>
     );
   }
 }

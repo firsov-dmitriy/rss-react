@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import SearchBar from './SearchBar';
 interface HeaderProps {
-  name?: string;
+  getValue: (value: string) => void;
 }
 interface HeaderState {
   value: string;
 }
 
 class Header extends Component<HeaderProps, HeaderState> {
-  private setInput: React.RefObject<HTMLInputElement>;
   constructor(props: HeaderProps) {
     super(props);
-
-    this.setInput = React.createRef();
-    this.handlerSubmit = this.handlerSubmit.bind(this);
-    this.getValue = this.getValue.bind(this);
   }
   state = {
     value: '',
   };
 
-  getValue(eve: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ value: eve.target.value });
-  }
-  componentWillUnmount() {
-    localStorage.setItem('searchText', this.state.value);
-  }
-  handlerSubmit(eve: React.FormEvent<HTMLFormElement>) {
-    eve.preventDefault();
-    console.log('State', +this.state.value);
-  }
-
   render() {
+    console.log(this.state.value);
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -67,19 +54,7 @@ class Header extends Component<HeaderProps, HeaderState> {
                 </NavLink>
               </li>
             </ul>
-            <form className="d-flex" onSubmit={(eve) => this.handlerSubmit(eve)}>
-              <input
-                data-testid="PostContent"
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                onChange={(eve) => this.getValue(eve)}
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
+            <SearchBar getValue={this.props.getValue} />
           </div>
         </div>
       </nav>
