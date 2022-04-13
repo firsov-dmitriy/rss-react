@@ -9,7 +9,7 @@ export default class Persona {
   checked: boolean | undefined;
   prom: boolean | undefined;
   buttonWork: number | undefined;
-  constructor({ name, secName, select, date, url, checked, prom, buttonWork }: personType) {
+  constructor({ name, secName, select, date, url, checked, prom }: personType) {
     this.name = name;
     this.secName = secName;
     this.select = select;
@@ -17,6 +17,5 @@ export default class Persona {
     this.url = url;
     this.checked = checked;
     this.prom = prom;
-    this.buttonWork = buttonWork;
   }
 }
