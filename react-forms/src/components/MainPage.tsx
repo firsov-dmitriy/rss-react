@@ -43,6 +43,7 @@ export default class MainPage extends Component<MainPageProps, MainPageState> {
     }
   }
   onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    document.body.style.overflow = 'hidden';
     this.setState({
       modalTriger: true,
     });
@@ -64,6 +65,7 @@ export default class MainPage extends Component<MainPageProps, MainPageState> {
     }
   }
   getCloseEvent(eve: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    document.body.style.overflow = '';
     this.setState({
       modalTriger: false,
     });
@@ -101,6 +103,7 @@ export default class MainPage extends Component<MainPageProps, MainPageState> {
           data={this.state.data}
           valueSerch={this.props.valueSerch}
         />
+
         {this.state.modalTriger && (
           <Modal
             name={char.name}

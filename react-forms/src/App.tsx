@@ -5,6 +5,7 @@ import ExistenPage from './components/ExistenPage';
 import Form from './components/Form';
 import Header from './components/Header';
 import MainPage from './components/MainPage';
+import './app.css';
 
 interface AppState {
   value: string;
@@ -32,7 +33,13 @@ class App extends Component<object, AppState> {
       submit: true,
     });
   }
-
+  showBurgerMenu(eve: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const coll = document.querySelector('.collapse');
+    coll?.classList.add('show');
+    document.querySelector('.navbar-toggler')?.addEventListener('click', (eve) => {
+      coll?.classList.remove('show');
+    });
+  }
   componentWillUnmount() {
     this.setState({
       submit: false,
@@ -44,7 +51,11 @@ class App extends Component<object, AppState> {
     return (
       <Router>
         <div className="container">
-          <Header getValue={this.getValue} onSubmit={this.onSubmit} />
+          <Header
+            getValue={this.getValue}
+            onSubmit={this.onSubmit}
+            showBurgerMenu={this.showBurgerMenu}
+          />
 
           <Routes>
             <Route

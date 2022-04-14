@@ -13,20 +13,12 @@ export default class Modal extends Component<ModalProps, ModalState> {
   constructor(props: ModalProps) {
     super(props);
   }
-  componentDidUpdate(prev: ModalProps) {
-    if (this.props.onShow) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.marginRight = '25px';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.marginRight = '';
-    }
-  }
+
   render() {
     return (
       <div
         style={this.props.onShow ? { display: 'block' } : { display: 'none' }}
-        className="modal "
+        className="modal modal-info"
         id="staticBackdrop"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
@@ -38,7 +30,7 @@ export default class Modal extends Component<ModalProps, ModalState> {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
-                About
+                About {this.props.name}
               </h5>
               <button
                 onClick={(eve) => this.props.getCloseEvent(eve)}
@@ -48,16 +40,19 @@ export default class Modal extends Component<ModalProps, ModalState> {
                 aria-label="Закрыть"
               ></button>
             </div>
-            <div className="modal-body">
-              <img src={this.props.image} alt={this.props.name} />
-              <h1>Name: {this.props.name}</h1>
-              <p>Gender: {this.props.gender}</p>
-              <p>Status: {this.props.status}</p>
+            <div className="modal-body" style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <img className="modal-body_image" src={this.props.image} alt={this.props.name} />
+              <div className="info">
+                <p>Gender: {this.props.gender}</p>
+                <p>Status: {this.props.status}</p>
+                <p>Type: {this.props.type}</p>
+                <p>Species: {this.props.species}</p>
+                <p>location: {this.props.location?.name}</p>
+                <p>Origin: {this.props.origin?.name}</p>
+              </div>
+
               {/* <p>Episode: {this.props.episode}</p> */}
-              <p>Type: {this.props.type}</p>
-              <p>Species: {this.props.species}</p>
-              <p>location: {this.props.location?.name}</p>
-              <p>origin: {this.props.origin?.name}</p>
+              <div className="info"></div>
             </div>
             <div className="modal-footer">
               <button
