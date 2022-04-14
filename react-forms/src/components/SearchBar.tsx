@@ -23,20 +23,32 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
   }
   handlerSubmit(eve: React.FormEvent<HTMLFormElement>) {
     eve.preventDefault();
-    console.log('State', +this.state.value);
+    this.setState({ value: '' });
   }
 
   render() {
+    console.log(this.state.value);
+
     return (
       <>
-        <form className="d-flex" onSubmit={(eve) => this.props.onSubmit(eve)}>
+        <form
+          className="d-flex"
+          onSubmit={(eve) => {
+            this.handlerSubmit(eve);
+            this.props.onSubmit(eve);
+          }}
+        >
           <input
             data-testid="PostContent"
             className="form-control me-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
-            onChange={(eve) => this.props.getValue(eve.target.value.toString())}
+            value={this.state.value}
+            onChange={(eve) => {
+              this.getValue(eve);
+              this.props.getValue(eve.target.value);
+            }}
           />
           <button className="btn btn-outline-success" type="submit">
             Search

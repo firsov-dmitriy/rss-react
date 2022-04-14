@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { dataChatacters } from '../types';
 import './card.css';
 interface CardProps extends dataChatacters {
+  dataId: number;
   onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  getIdCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 interface CardState {
@@ -25,9 +27,11 @@ export default class Card extends Component<CardProps, CardState> {
   render() {
     return (
       <div
+        data-id={this.props.dataId}
         className="card mt-3"
-        onClick={(eve) => {
-          this.props.onShowModalCard(eve);
+        onClick={($event) => {
+          this.props.getIdCard($event);
+          this.props.onShowModalCard($event);
         }}
       >
         <img src={this.props.image} className="card-img-top" />
