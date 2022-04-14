@@ -1,3 +1,24 @@
 .show {
   display: block;
 }
+
+.info {
+  margin-right: 30px;
+}
+
+.modal-info {
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+
+  z-index: 1000;
+  margin: 0 auto;
+}
+.modal-body_image {
+  margin-right: 10px;
+  width: max-content;
+}
+.btn {
+  display: block;
+  margin: 0 auto;
+}

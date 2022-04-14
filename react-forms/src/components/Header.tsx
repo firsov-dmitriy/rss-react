@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 interface HeaderProps {
   getValue: (value: string) => void;
   onSubmit: (submit: React.FormEvent<HTMLFormElement>) => void;
+  showBurgerMenu: (eve: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 interface HeaderState {
   value: string;
@@ -34,6 +35,7 @@ class Header extends Component<HeaderProps, HeaderState> {
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            onClick={(eve) => this.props.showBurgerMenu(eve)}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
