@@ -19,3 +19,16 @@ export interface selectType {
   id: number;
   city: string;
 }
+
+export interface dataChatacters {
+  id?: number;
+  name: string;
+  status: string;
+  image: string;
+  gender?: string;
+  species?: string;
+  location?: { name: string; url: string };
+  episode?: string[];
+  origin?: { name: string; url: string };
+  type?: string;
+}

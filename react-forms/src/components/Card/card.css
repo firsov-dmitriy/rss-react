@@ -1,0 +1,7 @@
+.card {
+  width: 32%;
+  margin-left: 10px;
+}
+.card:first-child {
+  margin-left: 0;
+}

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-interface CardProps {
-  name?: string;
+import { dataChatacters } from '../types';
+import './card.css';
+interface CardProps extends dataChatacters {
+  dataId: number;
+  onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  getIdCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
+
 interface CardState {
   cardLike: number;
 }
@@ -21,18 +26,22 @@ export default class Card extends Component<CardProps, CardState> {
 
   render() {
     return (
-      <div className="card mt-3" style={{ width: '33%' }}>
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfe2gRmY2DDfOeZm5LXgrLZqy5V0eXqrscYA&usqp=CAU"
-          className="card-img-top"
-        />
+      <div
+        data-id={this.props.dataId}
+        className="card mt-3"
+        onClick={($event) => {
+          this.props.getIdCard($event);
+          this.props.onShowModalCard($event);
+        }}
+      >
+        <img src={this.props.image} className="card-img-top" />
         <div className="card-body">
-          <h5 className="card-title">Титульник</h5>
-          <p className="card-text">Описание</p>
+          <h5 className="card-title">{this.props.name}</h5>
+          <p className="card-text">{this.props.status}</p>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">Имя автора</li>
-          <li className="list-group-item">Дата создания</li>
+          <li className="list-group-item"></li>
+          <li className="list-group-item"></li>
           <li className="list-group-item">Дата публикации</li>
         </ul>
         <div className="card-doby">
@@ -78,3 +87,6 @@ export default class Card extends Component<CardProps, CardState> {
     );
   }
 }
+// function onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+//   throw new Error('Function not implemented.');
+// }
