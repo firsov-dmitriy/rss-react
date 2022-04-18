@@ -43,6 +43,7 @@ export default class MainPage extends Component<MainPageProps, MainPageState> {
     }
   }
   onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    document.body.style.marginRight = '17px';
     document.body.style.overflow = 'hidden';
     this.setState({
       modalTriger: true,
@@ -64,8 +65,10 @@ export default class MainPage extends Component<MainPageProps, MainPageState> {
     if (modalTriger) {
     }
   }
-  getCloseEvent(eve: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  getCloseEvent() {
+    document.body.style.marginRight = '';
     document.body.style.overflow = '';
+
     this.setState({
       modalTriger: false,
     });

@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
 
-test('render CardList', () => {
+test('MainPage is render', async () => {
   render(<App />);
-  const renderNav = screen.getAllByText(/MainPage/i)[0];
   const btn = screen.getAllByRole('button')[1];
-  expect(renderNav).toBeInTheDocument();
+  const cardrender = await screen.findAllByText(/alive/i);
   expect(btn).toBeInTheDocument();
+  expect(cardrender[0]).toBeInTheDocument();
 });

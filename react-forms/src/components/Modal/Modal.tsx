@@ -3,7 +3,7 @@ import { dataChatacters } from '../types';
 import './modal.css';
 interface ModalProps extends dataChatacters {
   modalTriger: boolean;
-  getCloseEvent: (eve: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  getCloseEvent: () => void;
   onShow: boolean;
 }
 interface ModalState {
@@ -17,6 +17,7 @@ export default class Modal extends Component<ModalProps, ModalState> {
   render() {
     return (
       <div
+        onClick={(e) => e.currentTarget === e.target && this.props.getCloseEvent()}
         style={this.props.onShow ? { display: 'block' } : { display: 'none' }}
         className="modal modal-info"
         id="staticBackdrop"
@@ -33,7 +34,7 @@ export default class Modal extends Component<ModalProps, ModalState> {
                 About {this.props.name}
               </h5>
               <button
-                onClick={(eve) => this.props.getCloseEvent(eve)}
+                onClick={(eve) => this.props.getCloseEvent()}
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
@@ -58,7 +59,7 @@ export default class Modal extends Component<ModalProps, ModalState> {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={(eve) => this.props.getCloseEvent(eve)}
+                onClick={(eve) => this.props.getCloseEvent()}
                 data-bs-dismiss="modal"
               >
                 Закрыть
