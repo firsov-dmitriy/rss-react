@@ -45,7 +45,6 @@ export default class Card extends Component<CardProps, CardState> {
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item"></li>
-            <li className="list-group-item"></li>
             <li className="list-group-item">Дата публикации</li>
           </ul>
         </div>
@@ -76,7 +75,7 @@ export default class Card extends Component<CardProps, CardState> {
           </button>
           <button
             type="button"
-            className="btn btn-danger"
+            className="btn "
             onClick={() => {
               this.setState({
                 cardLike: this.state.cardLike - 1,
@@ -91,8 +90,8 @@ export default class Card extends Component<CardProps, CardState> {
               />
             </span>
           </button>
-          <h4> Like: {this.state.cardLike}</h4>
         </div>
+        <h4 className="card-like  "> Like: {this.state.cardLike}</h4>
       </div>
     );
   }

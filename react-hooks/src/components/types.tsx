@@ -2,10 +2,11 @@ export interface personType {
   name: string | undefined;
   secName: string | undefined;
   date: string | undefined;
-  prom: undefined | boolean;
-  url: string | undefined;
+  promo: undefined | boolean;
+  image: FileList;
   select: string | undefined;
   checked: boolean | undefined;
+  url: string | undefined;
 }
 
 export interface dirtyType {
