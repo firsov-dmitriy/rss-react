@@ -1,0 +1,11 @@
+.card {
+  width: 32%;
+  margin-left: 5px;
+}
+.card-like {
+  width: max-content;
+  margin: 0 auto;
+}
+.btn-group {
+  margin: 0 auto;
+}
