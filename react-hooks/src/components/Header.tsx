@@ -40,24 +40,31 @@ class Header extends Component<HeaderProps, HeaderState> {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <NavLink className="nav-link active" aria-current="page" to={'about'}>
-                  About
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to={'nonpage'}>
-                  NonPage
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to={'form'}>
-                  Form
-                </NavLink>
-              </li>
-            </ul>
-            <SearchBar getValue={this.props.getValue} onSubmit={this.props.onSubmit} />
+            <nav className="navbar navbar-dark ">
+              <ul className=" navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <NavLink
+                    style={{ color: 'black' }}
+                    className="nav-link active"
+                    aria-current="page"
+                    to={'about'}
+                  >
+                    About
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink style={{ color: 'black' }} className="nav-link" to={'nonpage'}>
+                    NonPage
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink style={{ color: 'black' }} className="nav-link" to={'form'}>
+                    Form
+                  </NavLink>
+                </li>
+              </ul>
+              <SearchBar getValue={this.props.getValue} onSubmit={this.props.onSubmit} />
+            </nav>
           </div>
         </div>
       </nav>
