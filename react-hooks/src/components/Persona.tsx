@@ -5,17 +5,17 @@ export default class Persona {
   secName: string | undefined;
   select: string | undefined;
   date: string | undefined;
-  url: string | undefined;
+  image: string | undefined | FileList;
   checked: boolean | undefined;
-  prom: boolean | undefined;
+  promo: boolean | undefined;
   buttonWork: number | undefined;
-  constructor({ name, secName, select, date, url, checked, prom }: personType) {
+  constructor({ name, secName, select, date, image, checked, promo }: personType) {
     this.name = name;
     this.secName = secName;
     this.select = select;
     this.date = date;
-    this.url = url;
+    this.image = image;
     this.checked = checked;
-    this.prom = prom;
+    this.promo = promo;
   }
 }

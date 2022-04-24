@@ -30,7 +30,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
     console.log(this.state.value);
 
     return (
-      <>
+      <div className="">
         <form
           className="d-flex"
           onSubmit={(eve) => {
@@ -54,7 +54,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
             Search
           </button>
         </form>
-      </>
+      </div>
     );
   }
 }

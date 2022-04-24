@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import About from './components/About';
 import ExistenPage from './components/ExistenPage';
-import Form from './components/Form';
+// import Form from './components/Form';
 import Header from './components/Header';
 import MainPage from './components/MainPage';
 import './app.css';
+import FormNow from './components/Form';
 
 interface AppState {
   value: string;
@@ -27,6 +28,7 @@ class App extends Component<object, AppState> {
       submit: false,
     });
   }
+
   onSubmit(eve: React.FormEvent<HTMLFormElement>) {
     eve.preventDefault();
     this.setState({
@@ -65,7 +67,7 @@ class App extends Component<object, AppState> {
             <Route path="/about" element={<About />} />
             <Route path="/nonpages" element={<ExistenPage />} />
             <Route path="*" element={<ExistenPage />} />
-            <Route path="/form" element={<Form />} />
+            <Route path="/form" element={<FormNow />} />
           </Routes>
         </div>
       </Router>

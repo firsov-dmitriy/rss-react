@@ -1,7 +1,11 @@
 .card {
   width: 32%;
-  margin-left: 10px;
+  margin-left: 5px;
 }
-.card:first-child {
-  margin-left: 0;
+.card-like {
+  width: max-content;
+  margin: 0 auto;
+}
+.btn-group {
+  margin: 0 auto;
 }
