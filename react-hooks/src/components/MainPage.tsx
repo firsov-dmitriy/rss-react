@@ -1,19 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { Context } from '../service/context';
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
 import Modal from './Modal/Modal';
 import { dataChatacters } from './types';
 
 interface MainPageProps {
-  valueSerch: string;
   submit: boolean;
 }
 
-const MainPage: FC<MainPageProps> = ({ valueSerch, submit }) => {
+const MainPage: FC<MainPageProps> = ({ submit }) => {
   const [data, setData] = useState<dataChatacters[]>([]);
   const [modalTriger, setModalTriger] = useState<boolean>(false);
   const [idChar, setIdChar] = useState<number | null | string>(0);
   const [char, setChar] = useState<dataChatacters>();
+  const { value } = useContext(Context);
   const api = new serviceMorty();
   const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     document.body.style.marginRight = '17px';
@@ -41,9 +42,9 @@ const MainPage: FC<MainPageProps> = ({ valueSerch, submit }) => {
       .then((data) => setData(data.results));
   }, []);
   useEffect(() => {
-    getCharacter(valueSerch);
+    getCharacter(value);
   }, [submit]);
-  console.log(data, idChar);
+  console.log(value);
 
   return (
     <>
@@ -51,7 +52,7 @@ const MainPage: FC<MainPageProps> = ({ valueSerch, submit }) => {
         getIdCard={getIdCard}
         onShowModalCard={(eve) => onShowModalCard(eve)}
         data={data}
-        valueSerch={valueSerch}
+        valueSerch={value}
       />
 
       {modalTriger && (

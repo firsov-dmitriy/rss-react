@@ -33,3 +33,6 @@ export interface dataChatacters {
   origin?: { name: string; url: string };
   type?: string;
 }
+export interface ContextType {
+  valueSerch: string;
+}
