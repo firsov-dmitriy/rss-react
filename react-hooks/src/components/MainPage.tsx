@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { Context } from '../service/context';
+import { ValueType } from '../service/reducer';
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
 import Modal from './Modal/Modal';
@@ -14,7 +15,7 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   const [modalTriger, setModalTriger] = useState<boolean>(false);
   const [idChar, setIdChar] = useState<number | null | string>(0);
   const [char, setChar] = useState<dataChatacters>();
-  const { value } = useContext(Context);
+  const { valueSerch } = useContext<ValueType>(Context);
   const api = new serviceMorty();
   const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     document.body.style.marginRight = '17px';
@@ -42,9 +43,8 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
       .then((data) => setData(data.results));
   }, []);
   useEffect(() => {
-    getCharacter(value);
+    getCharacter(valueSerch);
   }, [submit]);
-  console.log(value);
 
   return (
     <>
@@ -52,7 +52,7 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
         getIdCard={getIdCard}
         onShowModalCard={(eve) => onShowModalCard(eve)}
         data={data}
-        valueSerch={value}
+        valueSerch={valueSerch}
       />
 
       {modalTriger && (

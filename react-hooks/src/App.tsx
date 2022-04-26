@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useReducer, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import About from './components/About';
 import ExistenPage from './components/ExistenPage';
@@ -8,13 +8,14 @@ import MainPage from './components/MainPage';
 import './app.css';
 import FormNow from './components/Form';
 import { Context } from './service/context';
+import reducer, { ActionTypes, initialState } from './service/reducer';
 
 const App: FC = () => {
-  const [valueSerch, setValueSerch] = useState('');
+  // const [valueSerch, setValueSerch] = useState('');
   const [submit, setSubmit] = useState(false);
-
+  const [valueSerch, dispatch] = useReducer(reducer, initialState);
   const getValue = (text: string) => {
-    setValueSerch(text);
+    dispatch({ type: ActionTypes.SET_VALUE, payload: text });
     setSubmit(false);
   };
   const onSubmit = (eve: React.FormEvent<HTMLFormElement>) => {
@@ -28,10 +29,11 @@ const App: FC = () => {
       coll?.classList.remove('show');
     });
   };
+  console.log(valueSerch);
 
   return (
     <Router>
-      <Context.Provider value={{ value: valueSerch, person: {} }}>
+      <Context.Provider value={valueSerch}>
         <div className="container">
           <Header getValue={getValue} onSubmit={onSubmit} showBurgerMenu={showBurgerMenu} />
 
