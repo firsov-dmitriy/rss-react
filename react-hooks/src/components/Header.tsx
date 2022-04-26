@@ -14,13 +14,8 @@ class Header extends Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
     super(props);
   }
-  state = {
-    value: '',
-  };
 
   render() {
-    console.log(this.state.value);
-
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">

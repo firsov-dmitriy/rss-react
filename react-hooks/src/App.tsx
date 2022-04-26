@@ -8,7 +8,7 @@ import MainPage from './components/MainPage';
 import './app.css';
 import FormNow from './components/Form';
 import { Context } from './service/context';
-import reducer, { ActionTypes, initialState } from './service/reducer';
+import reducer, { ActionTypes, initialState } from './service/reducers/reducer';
 
 const App: FC = () => {
   // const [valueSerch, setValueSerch] = useState('');

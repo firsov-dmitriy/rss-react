@@ -1,4 +1,4 @@
-import { dataChatacters, personType } from '../components/types';
+import { dataChatacters, personType } from '../../types/types';
 
 export interface ValueType {
   valueSerch: string;

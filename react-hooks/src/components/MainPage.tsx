@@ -1,10 +1,12 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useReducer, useState } from 'react';
 import { Context } from '../service/context';
-import { ValueType } from '../service/reducer';
+import { ValueType } from '../service/reducers/reducer';
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
 import Modal from './Modal/Modal';
-import { dataChatacters } from './types';
+import { dataChatacters } from '../types/types';
+import cardReducer, { initialState } from '../service/reducers/cardReducer';
+import { CardActionTypes } from '../types/card';
 
 interface MainPageProps {
   submit: boolean;
@@ -16,6 +18,7 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   const [idChar, setIdChar] = useState<number | null | string>(0);
   const [char, setChar] = useState<dataChatacters>();
   const { valueSerch } = useContext<ValueType>(Context);
+  const [card, dispatch] = useReducer(cardReducer, initialState);
   const api = new serviceMorty();
   const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     document.body.style.marginRight = '17px';
@@ -45,6 +48,9 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   useEffect(() => {
     getCharacter(valueSerch);
   }, [submit]);
+  if (!data) {
+    return <h1>...Load</h1>;
+  }
 
   return (
     <>

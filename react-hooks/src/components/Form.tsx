@@ -1,9 +1,9 @@
 import React, { useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import reducer, { ActionTypes, initialState } from '../service/reducer';
+import reducer, { ActionTypes, initialState } from '../service/reducers/reducer';
 import CardPerson from './CardPerson';
 import ErrorForm from './ErrorForm';
-import { personType } from './types';
+import { personType } from '../types/types';
 
 const FormNow = () => {
   const [{ person }, dispatch] = useReducer(reducer, initialState);

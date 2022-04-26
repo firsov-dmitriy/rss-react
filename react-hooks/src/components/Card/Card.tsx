@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { dataChatacters } from '../types';
+import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
   dataId: number;

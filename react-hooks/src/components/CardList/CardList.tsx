@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Card from '../Card/Card';
-import { dataChatacters } from '../types';
+import { dataChatacters } from '../../types/types';
 import './cardList.css';
 interface CardListProps {
   data: dataChatacters[];
