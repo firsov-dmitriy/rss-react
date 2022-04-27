@@ -1,12 +1,14 @@
 import React, { FC, useContext, useEffect, useReducer, useState } from 'react';
 import { Context } from '../service/context';
-import { ValueType } from '../service/reducers/reducer';
+import reducer, { ActionTypes, initialState, ValueType } from '../service/reducers/reducer';
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
 import Modal from './Modal/Modal';
 import { dataChatacters } from '../types/types';
-import cardReducer, { initialState } from '../service/reducers/cardReducer';
+import cardReducer, { initialCardState } from '../service/reducers/cardReducer';
 import { CardActionTypes } from '../types/card';
+import SortCard from './SortCard';
+import Pagination from './Pagination';
 
 interface MainPageProps {
   submit: boolean;
@@ -16,9 +18,11 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   const [data, setData] = useState<dataChatacters[]>([]);
   const [modalTriger, setModalTriger] = useState<boolean>(false);
   const [idChar, setIdChar] = useState<number | null | string>(0);
+
   const [char, setChar] = useState<dataChatacters>();
-  const { valueSerch } = useContext<ValueType>(Context);
-  const [card, dispatch] = useReducer(cardReducer, initialState);
+  const { valueSerch, status } = useContext(Context);
+  const [{ card, loading }, dispatch] = useReducer(cardReducer, initialCardState);
+
   const api = new serviceMorty();
   const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     document.body.style.marginRight = '17px';
@@ -36,28 +40,24 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
     document.body.style.overflow = '';
     setModalTriger(false);
   };
-  const getCharacter = (valueSerch: string) => {
-    submit && api.getCharacter(valueSerch).then((data) => setData(data.results));
-  };
 
   useEffect(() => {
-    api
-      .getDataCharacters(`https://rickandmortyapi.com/api/character`)
-      .then((data) => setData(data.results));
-  }, []);
-  useEffect(() => {
-    getCharacter(valueSerch);
-  }, [submit]);
-  if (!data) {
+    api.getCard(1, 10, valueSerch, status)(dispatch);
+  }, [valueSerch, status]);
+
+  if (loading) {
     return <h1>...Load</h1>;
   }
 
+  console.log(status);
+
   return (
     <>
+      <SortCard />
       <CardList
         getIdCard={getIdCard}
         onShowModalCard={(eve) => onShowModalCard(eve)}
-        data={data}
+        data={card}
         valueSerch={valueSerch}
       />
 
@@ -77,6 +77,7 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
           onShow={modalTriger}
         />
       )}
+      <Pagination />
     </>
   );
 };

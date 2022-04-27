@@ -1,7 +1,7 @@
 import { CardState, CardAction, CardActionTypes } from './../../types/card';
 
 
-export const initialState:CardState ={
+export const initialCardState:CardState ={
     card:[],
     page: 1,
     error: null,
@@ -10,7 +10,7 @@ export const initialState:CardState ={
 }
 
 
-export default function cardReducer(state = initialState, action: CardAction):CardState {
+export default function cardReducer(state = initialCardState, action: CardAction):CardState {
     switch (action.type) {
         case CardActionTypes.FETCH_CARD:
             return {...state, loading: true}

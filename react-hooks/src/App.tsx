@@ -13,7 +13,7 @@ import reducer, { ActionTypes, initialState } from './service/reducers/reducer';
 const App: FC = () => {
   // const [valueSerch, setValueSerch] = useState('');
   const [submit, setSubmit] = useState(false);
-  const [valueSerch, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const getValue = (text: string) => {
     dispatch({ type: ActionTypes.SET_VALUE, payload: text });
     setSubmit(false);
@@ -29,11 +29,10 @@ const App: FC = () => {
       coll?.classList.remove('show');
     });
   };
-  console.log(valueSerch);
 
   return (
     <Router>
-      <Context.Provider value={valueSerch}>
+      <Context.Provider value={state}>
         <div className="container">
           <Header getValue={getValue} onSubmit={onSubmit} showBurgerMenu={showBurgerMenu} />
 
