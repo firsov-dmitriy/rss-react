@@ -23,7 +23,6 @@ export default class serviceMorty {
     return async (dispatch: Dispatch<CardAction>) => {
       try {
         dispatch({ type: CardActionTypes.FETCH_CARD });
-        console.log(name !== '');
 
         const response = await axios.get(
           `https://rickandmortyapi.com/api/character/${name !== '' ? '?name=' + name : ''}${

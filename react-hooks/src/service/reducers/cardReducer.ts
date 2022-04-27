@@ -8,8 +8,6 @@ export const initialCardState:CardState ={
     limit: 10,
     loading: false
 }
-
-
 export default function cardReducer(state = initialCardState, action: CardAction):CardState {
     switch (action.type) {
         case CardActionTypes.FETCH_CARD:

@@ -1,14 +1,17 @@
+import { Dispatch } from 'react';
 import { dataChatacters, personType } from '../../types/types';
 
 export interface ValueType {
   valueSerch: string;
   person: personType[];
-  status: string
+  status: string,
+  
 }
 export const initialState: ValueType = {
   valueSerch: '',
   person: [],
   status: "",
+ 
 };
 
 export enum ActionTypes {

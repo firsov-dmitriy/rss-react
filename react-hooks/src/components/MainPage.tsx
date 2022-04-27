@@ -6,7 +6,7 @@ import CardList from './CardList/CardList';
 import Modal from './Modal/Modal';
 import { dataChatacters } from '../types/types';
 import cardReducer, { initialCardState } from '../service/reducers/cardReducer';
-import { CardActionTypes } from '../types/card';
+
 import SortCard from './SortCard';
 import Pagination from './Pagination';
 
@@ -18,10 +18,10 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   const [data, setData] = useState<dataChatacters[]>([]);
   const [modalTriger, setModalTriger] = useState<boolean>(false);
   const [idChar, setIdChar] = useState<number | null | string>(0);
-
+  const [{ status }, dispatchStatus] = useReducer(reducer, initialState);
   const [char, setChar] = useState<dataChatacters>();
-  const { valueSerch, status } = useContext(Context);
-  const [{ card, loading }, dispatch] = useReducer(cardReducer, initialCardState);
+  const { valueSerch } = useContext(Context);
+  const [{ card, loading }, dispatchCard] = useReducer(cardReducer, initialCardState);
 
   const api = new serviceMorty();
   const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -42,18 +42,24 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   };
 
   useEffect(() => {
-    api.getCard(1, 10, valueSerch, status)(dispatch);
-  }, [valueSerch, status]);
+    api.getCard(1, 10, valueSerch, status)(dispatchCard);
+  }, [submit, status]);
 
   if (loading) {
-    return <h1>...Load</h1>;
+    return (
+      <div className="d-flex justify-content-center ">
+        <div className="spinner-border " style={{ width: '200px', height: '200px' }} role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   console.log(status);
 
   return (
     <>
-      <SortCard />
+      <SortCard dispatchStatus={dispatchStatus} />
       <CardList
         getIdCard={getIdCard}
         onShowModalCard={(eve) => onShowModalCard(eve)}
