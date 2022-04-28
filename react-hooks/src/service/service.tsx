@@ -32,7 +32,10 @@ export default class serviceMorty {
             params: { page: page, limit: limit },
           }
         );
+        console.log(response.data);
+
         dispatch({ type: CardActionTypes.FETCH_CARD_SUCCESS, payload: response.data.results });
+        dispatch({ type: CardActionTypes.SET_CARD_LIMIT, payload: response.data.info.pages });
       } catch (e) {
         dispatch({ type: CardActionTypes.FETCH_CARD_ERROR, payload: 'Error fetch data' });
       }

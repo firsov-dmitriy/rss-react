@@ -1,18 +1,22 @@
-import { Dispatch } from 'react';
+
+import { Dispatch, useReducer } from 'react';
 import { dataChatacters, personType } from '../../types/types';
 
 export interface ValueType {
   valueSerch: string;
   person: personType[];
   status: string,
-  
+  dispatch?: (Dispatch<ActionType>) | undefined;
 }
+
+  
 export const initialState: ValueType = {
   valueSerch: '',
   person: [],
   status: "",
  
 };
+
 
 export enum ActionTypes {
   SET_VALUE = 'SET_VALUE',

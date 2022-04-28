@@ -1,12 +1,14 @@
-import React, { Dispatch, FC, useReducer } from 'react';
+import React, { Dispatch, FC, useContext, useReducer } from 'react';
+import { Context } from '../service/context';
 import { initialCardState } from '../service/reducers/cardReducer';
 import reducer, { ActionType, ActionTypes, initialState } from '../service/reducers/reducer';
-interface SortCardProps {
-  dispatchStatus: Dispatch<ActionType>;
-}
-const SortCard: FC<SortCardProps> = ({ dispatchStatus }) => {
+
+const SortCard: FC = () => {
+  const { status, dispatch } = useContext(Context);
   const getStatus = (eve: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
-    dispatchStatus({ type: ActionTypes.SET_STATUS, payload: eve.currentTarget.innerText });
+    if (dispatch) {
+      dispatch({ type: ActionTypes.SET_STATUS, payload: eve.currentTarget.innerText });
+    }
   };
 
   return (
