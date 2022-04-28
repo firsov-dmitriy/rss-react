@@ -19,7 +19,7 @@ export default class serviceMorty {
       return await response.json();
     }
   }
-  getCard(page = 1, limit = 10, name = '', status = '') {
+  getCard(page = 1, name = '', status = '') {
     return async (dispatch: Dispatch<CardAction>) => {
       try {
         dispatch({ type: CardActionTypes.FETCH_CARD });
@@ -29,10 +29,9 @@ export default class serviceMorty {
             status !== '' ? '&status=' + status : ''
           }`,
           {
-            params: { page: page, limit: limit },
+            params: { page: page },
           }
         );
-        console.log(response.data);
 
         dispatch({ type: CardActionTypes.FETCH_CARD_SUCCESS, payload: response.data.results });
         dispatch({ type: CardActionTypes.SET_CARD_LIMIT, payload: response.data.info.pages });

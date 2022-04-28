@@ -1,49 +1,40 @@
-import React, { Dispatch, FC, useContext, useEffect, useReducer, useState } from 'react';
+import React, { FC, useContext, useEffect, useReducer, useState } from 'react';
 import { Context, ContextCard } from '../service/context';
-import reducer, {
-  ActionType,
-  ActionTypes,
-  initialState,
-  ValueType,
-} from '../service/reducers/reducer';
+
 import serviceMorty from '../service/service';
 import CardList from './CardList/CardList';
-import Modal from './Modal/Modal';
+
 import { dataChatacters } from '../types/types';
-import cardReducer, { initialCardState } from '../service/reducers/cardReducer';
 
 import SortCard from './SortCard';
 import Pagination from './Pagination';
+import reducer, { ActionTypes, initialState } from '../service/reducers/reducer';
 
 interface MainPageProps {
   submit: boolean;
 }
 
 const MainPage: FC<MainPageProps> = ({ submit }) => {
-  const [modalTriger, setModalTriger] = useState<boolean>(false);
   const [idChar, setIdChar] = useState<number | null | string>(0);
   const { valueSerch, status, dispatch } = useContext(Context);
-  const { card, loading } = useContext(ContextCard);
+  const { card, loading, dispatchCard } = useContext(ContextCard);
 
   const [char, setChar] = useState<dataChatacters>();
 
-  const api = new serviceMorty();
-  const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    document.body.style.marginRight = '17px';
-    document.body.style.overflow = 'hidden';
-    setModalTriger(true);
-    modalTriger;
-  };
+  // const onShowModalCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //   // document.body.style.marginRight = '17px';
+  //   // document.body.style.overflow = 'hidden';
+  //   setModalTriger(true);
+  //   modalTriger;
+  // };
 
   const getIdCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const num = parseInt(eve.currentTarget.getAttribute('data-id') + '');
     setChar(card[num]);
     setIdChar(num);
-  };
-  const getCloseEvent = () => {
-    document.body.style.marginRight = '';
-    document.body.style.overflow = '';
-    setModalTriger(false);
+    if (dispatch) {
+      dispatch({ type: ActionTypes.SET_PARAM_ID, payload: num });
+    }
   };
 
   if (loading) {
@@ -56,19 +47,12 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
     );
   }
 
-  console.log(valueSerch, status);
-
   return (
     <>
       <SortCard />
-      <CardList
-        getIdCard={getIdCard}
-        onShowModalCard={(eve) => onShowModalCard(eve)}
-        data={card}
-        valueSerch={valueSerch}
-      />
+      <CardList getIdCard={getIdCard} data={card} valueSerch={valueSerch} />
 
-      {modalTriger && (
+      {/* {modalTriger && (
         <Modal
           name={char!.name}
           status={char!.status}
@@ -83,7 +67,8 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
           getCloseEvent={getCloseEvent}
           onShow={modalTriger}
         />
-      )}
+      )} */}
+      {/* <NavLink to={'/card'} children={<CardPage />} /> */}
       <Pagination />
     </>
   );

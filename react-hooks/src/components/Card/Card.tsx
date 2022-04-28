@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
   dataId: number;
-  onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  // onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   getIdCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -23,22 +24,28 @@ export default class Card extends Component<CardProps, CardState> {
       cardLike: this.state.cardLike + 1,
     });
   };
+  openCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+  };
 
   render() {
     return (
       <div
         data-id={this.props.dataId}
         className="card mt-3"
-        onClick={($event) => {
-          this.props.getIdCard($event);
+        onClick={(e) => {
+          this.openCard(e);
         }}
       >
         <div
-          onClick={($event) => {
-            this.props.onShowModalCard($event);
-          }}
+        // onClick={($event) => {
+        //   this.props.onShowModalCard($event);
+        // }}
         >
-          <img src={this.props.image} className="card-img-top" />
+          <Link to={`/card/${this.props.dataId}`}>
+            <img src={this.props.image} className="card-img-top" />
+          </Link>
+
           <div className="card-body">
             <h5 className="card-title">{this.props.name}</h5>
             <p className="card-text">{this.props.status}</p>

@@ -4,7 +4,7 @@ import { ContextCard } from '../service/context';
 import { CardActionTypes } from '../types/card';
 
 const Pagination = () => {
-  const { page, limit, dispatchCard } = useContext(ContextCard);
+  const { page, card, limit, dispatchCard } = useContext(ContextCard);
   const chageName = (eve: React.MouseEvent<HTMLAnchorElement, MouseEvent>, num: number) => {
     eve.preventDefault();
 
@@ -12,7 +12,7 @@ const Pagination = () => {
       dispatchCard({ type: CardActionTypes.SET_CARD_PAGE, payload: +num });
     }
   };
-  console.log(page);
+
   return (
     <div className="d-flex justify-content-center">
       <nav aria-label="Page navigation example">
