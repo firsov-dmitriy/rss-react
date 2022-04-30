@@ -47,6 +47,7 @@ interface SET_PARAM {
 }
 interface SET_BACK {
   type: ActionTypes.SET_BACK_BTN;
+  payload: boolean;
 }
 export type ActionType = SET_VALUE | SET_BACK | SET_FORM | SET_STATUS | SET_PARAM;
 
@@ -61,7 +62,7 @@ export default function reducer(state = initialState, action: ActionType): Value
     case ActionTypes.SET_PARAM_ID:
       return { ...state, param: { id: action.payload } };
     case ActionTypes.SET_BACK_BTN:
-      return { ...state, back: !state.back };
+      return { ...state, back: action.payload };
     default:
       return state;
   }

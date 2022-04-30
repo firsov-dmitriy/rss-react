@@ -6,7 +6,6 @@ import './cardShow.css';
 const CardShow = () => {
   const { card } = useContext(ContextCard);
   const { id } = useParams();
-  console.log(id);
 
   return (
     <>

@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, FC, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Context } from '../../service/context';
+import { ActionTypes } from '../../service/reducers/reducer';
 import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
@@ -11,98 +13,89 @@ interface CardProps extends dataChatacters {
 interface CardState {
   cardLike: number;
 }
-export default class Card extends Component<CardProps, CardState> {
-  constructor(props: CardProps) {
-    super(props);
-    this.state = {
-      cardLike: 0,
-    };
-  }
 
-  likeAdd = () => {
-    this.setState({
-      cardLike: this.state.cardLike + 1,
-    });
-  };
-  openCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
+  const [cardLike, setCardLike] = useState(0);
+  const { back, dispatch } = useContext(Context);
+  const openCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
   };
-
-  render() {
-    return (
+  return (
+    <div
+      data-id={dataId}
+      className="card mt-3"
+      onClick={(e) => {
+        openCard(e);
+      }}
+    >
       <div
-        data-id={this.props.dataId}
-        className="card mt-3"
-        onClick={(e) => {
-          this.openCard(e);
-        }}
+      // onClick={($event) => {
+      //   this.props.onShowModalCard($event);
+      // }}
       >
-        <div
-        // onClick={($event) => {
-        //   this.props.onShowModalCard($event);
-        // }}
-        >
-          <Link to={`/card/${this.props.dataId}`}>
-            <img src={this.props.image} className="card-img-top" />
-          </Link>
-
-          <div className="card-body">
-            <h5 className="card-title">{this.props.name}</h5>
-            <p className="card-text">{this.props.status}</p>
-          </div>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item"></li>
-            <li className="list-group-item">Дата публикации</li>
-          </ul>
-        </div>
-        <div className="card-doby"></div>
-
-        <div
-          style={{ width: '75%' }}
-          className="btn-group"
-          role="group"
-          aria-label="Basic mixed styles example"
-        >
-          <button
-            type="button"
-            className="btn  "
+        <Link to={`/card/${dataId}`}>
+          <img
+            src={image}
+            className="card-img-top"
             onClick={() => {
-              this.setState({
-                cardLike: this.state.cardLike + 1,
-              });
+              if (dispatch) {
+                dispatch({ type: ActionTypes.SET_BACK_BTN, payload: true });
+              }
             }}
-          >
-            <span>
-              <img
-                src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-like-notifications-justicon-lineal-color-justicon.png"
-                alt="like"
-                style={{ width: '30px' }}
-              />
-            </span>
-          </button>
-          <button
-            type="button"
-            className="btn "
-            onClick={() => {
-              this.setState({
-                cardLike: this.state.cardLike - 1,
-              });
-            }}
-          >
-            <span>
-              <img
-                src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/000000/external-dislike-feedback-those-icons-lineal-color-those-icons.png"
-                alt="dislike"
-                style={{ width: '30px' }}
-              />
-            </span>
-          </button>
+          />
+        </Link>
+
+        <div className="card-body">
+          <h5 className="card-title">{name}</h5>
+          <p className="card-text">{status}</p>
         </div>
-        <h4 className="card-like  "> Like: {this.state.cardLike}</h4>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item"></li>
+          <li className="list-group-item">Дата публикации</li>
+        </ul>
       </div>
-    );
-  }
-}
-// function onShowModalCard(eve: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-//   throw new Error('Function not implemented.');
-// }
+      <div className="card-doby"></div>
+
+      <div
+        style={{ width: '75%' }}
+        className="btn-group"
+        role="group"
+        aria-label="Basic mixed styles example"
+      >
+        <button
+          type="button"
+          className="btn  "
+          onClick={() => {
+            setCardLike(cardLike + 1);
+          }}
+        >
+          <span>
+            <img
+              src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-like-notifications-justicon-lineal-color-justicon.png"
+              alt="like"
+              style={{ width: '30px' }}
+            />
+          </span>
+        </button>
+        <button
+          type="button"
+          className="btn "
+          onClick={() => {
+            setCardLike(cardLike - 1);
+          }}
+        >
+          <span>
+            <img
+              src="https://img.icons8.com/external-those-icons-lineal-color-those-icons/24/000000/external-dislike-feedback-those-icons-lineal-color-those-icons.png"
+              alt="dislike"
+              style={{ width: '30px' }}
+            />
+          </span>
+        </button>
+      </div>
+      <h4 className="card-like  "> Like: {cardLike}</h4>
+    </div>
+  );
+};
+
+export default Card;
