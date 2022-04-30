@@ -25,7 +25,7 @@ export interface dataChatacters {
   id?: number;
   name: string;
   status: string;
-  image: string;
+  image: string | undefined;
   gender?: string;
   species?: string;
   location?: { name: string; url: string };
@@ -33,3 +33,6 @@ export interface dataChatacters {
   origin?: { name: string; url: string };
   type?: string;
 }
+// export interface ContextType {
+//   valueSerch: string;
+// }

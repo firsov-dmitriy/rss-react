@@ -1,4 +1,4 @@
-import { personType } from './types';
+import { personType } from '../types/types';
 
 export default class Persona {
   name: string | undefined;

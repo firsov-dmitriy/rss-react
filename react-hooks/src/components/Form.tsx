@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import reducer, { ActionTypes, initialState } from '../service/reducers/reducer';
 import CardPerson from './CardPerson';
 import ErrorForm from './ErrorForm';
-import { personType } from './types';
+import { personType } from '../types/types';
 
 const FormNow = () => {
-  const [dataPerson, setDataPerson] = useState<personType[]>([]);
+  const [{ person }, dispatch] = useReducer(reducer, initialState);
   const {
     register,
     handleSubmit,
@@ -18,7 +19,11 @@ const FormNow = () => {
     reader.readAsDataURL(imgRef);
 
     reader.onload = () => {
-      setDataPerson((prev: personType[]) => [...prev, { ...data, url: reader.result?.toString() }]);
+      dispatch({
+        type: ActionTypes.SET_FORM,
+        payload: { ...data, url: reader.result?.toString() },
+      });
+
       reset();
     };
   };
@@ -119,7 +124,7 @@ const FormNow = () => {
       </form>
       <h3>Card Person</h3>
       <section className="card_person d-flex">
-        {dataPerson.map((person, id) => (
+        {person.map((person, id) => (
           <CardPerson
             key={id}
             name={person.name}

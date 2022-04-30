@@ -27,8 +27,6 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
   }
 
   render() {
-    console.log(this.state.value);
-
     return (
       <div className="">
         <form

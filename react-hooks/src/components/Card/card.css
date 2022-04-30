@@ -1,5 +1,4 @@
 .card {
-  width: 32%;
   margin-left: 5px;
 }
 .card-like {
@@ -8,4 +7,14 @@
 }
 .btn-group {
   margin: 0 auto;
+}
+.card-img-top {
+  max-width: 300px;
+}
+
+.card-title {
+  display: inline-flex;
+}
+.card-body {
+  max-width: 300px;
 }

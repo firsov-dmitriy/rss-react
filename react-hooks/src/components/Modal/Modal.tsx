@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { dataChatacters } from '../types';
+import { dataChatacters } from '../../types/types';
 import './modal.css';
 interface ModalProps extends dataChatacters {
   modalTriger: boolean;
