@@ -1,5 +1,6 @@
-import { Dispatch, useReducer } from 'react';
-import { dataChatacters, personType } from '../../types/types';
+import { Dispatch } from 'react';
+import { AnyAction } from 'redux';
+import { personType } from '../../types/types';
 
 export interface ValueType {
   valueSerch: string;
@@ -41,7 +42,7 @@ interface SET_STATUS {
   type: ActionTypes.SET_STATUS;
   payload: string;
 }
-interface SET_PARAM {
+interface SET_PARAM_ID {
   type: ActionTypes.SET_PARAM_ID;
   payload: number;
 }
@@ -49,9 +50,9 @@ interface SET_BACK {
   type: ActionTypes.SET_BACK_BTN;
   payload: boolean;
 }
-export type ActionType = SET_VALUE | SET_BACK | SET_FORM | SET_STATUS | SET_PARAM;
+export type ActionType = SET_VALUE | SET_BACK | SET_FORM | SET_STATUS | SET_PARAM_ID;
 
-export default function reducer(state = initialState, action: ActionType): ValueType {
+export default function reducer(state = initialState, action: ActionType | AnyAction): ValueType {
   switch (action.type) {
     case ActionTypes.SET_VALUE:
       return { ...state, valueSerch: action.payload };

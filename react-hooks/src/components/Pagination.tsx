@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
-import { ContextCard } from '../service/context';
+import React from 'react';
+import { useAppSelector, useAppDispatch } from '../hooks/redux';
 
-import { CardActionTypes } from '../types/card';
+import { cardSlice } from '../store/reducers/CardSlice';
 
 const Pagination = () => {
-  const { page, card, limit, dispatchCard } = useContext(ContextCard);
-  const chageName = (eve: React.MouseEvent<HTMLAnchorElement, MouseEvent>, num: number) => {
+  const { pages, limits } = useAppSelector((state) => state.cardReducer);
+  const { changePage } = cardSlice.actions;
+  const dispatch = useAppDispatch();
+  const setPage = (eve: React.MouseEvent, num: number) => {
     eve.preventDefault();
-
-    if (dispatchCard) {
-      dispatchCard({ type: CardActionTypes.SET_CARD_PAGE, payload: +num });
-    }
+    dispatch(changePage(num));
   };
 
   return (
@@ -20,7 +19,9 @@ const Pagination = () => {
           <li className="page-item prev-10">
             <a
               className="page-link prev-5"
-              onClick={(eve) => chageName(eve, page > 5 ? page - 5 : 1)}
+              onClick={(eve) => {
+                setPage(eve, pages > 5 ? pages - 5 : 1);
+              }}
               href=""
             >
               <span>&laquo;</span>
@@ -29,26 +30,30 @@ const Pagination = () => {
           <li className="page-item">
             <a
               className="page-link"
-              onClick={(eve) => chageName(eve, page <= 1 ? 1 : page - 1)}
+              onClick={(eve) => setPage(eve, pages <= 1 ? 1 : pages - 1)}
               href=""
             >
-              {page <= 1 ? 1 : page - 1}
+              {pages <= 1 ? 1 : pages - 1}
             </a>
           </li>
           <li className="page-item">
-            <a className="page-link" onClick={(eve) => chageName(eve, page)} href="">
-              {page}
+            <a className="page-link" onClick={(eve) => setPage(eve, pages)} href="">
+              {pages}
             </a>
           </li>
           <li className="page-item">
-            <a className="page-link" onClick={(eve) => chageName(eve, page + 1)} href="">
-              {page + 1}
+            <a className="page-link" onClick={(eve) => setPage(eve, pages + 1)} href="">
+              {pages + 1}
             </a>
           </li>
           <li className="page-item ">
             <a
               className="page-link next-5 "
-              onClick={(eve) => chageName(eve, page + 5 > limit ? limit : page + 5)}
+              onClick={(eve) => {
+                eve.preventDefault();
+
+                setPage(eve, pages + 5 > limits ? limits : pages + 5);
+              }}
               href=""
             >
               <span>&raquo;</span>

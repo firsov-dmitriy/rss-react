@@ -1,13 +1,18 @@
 import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Context, ContextCard } from './service/context';
-import cardReducer, { initialCardState } from './service/reducers/cardReducer';
+import { setupStore } from './store/store';
+
 function index() {
+  const store = setupStore();
+
   return (
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   );
 }

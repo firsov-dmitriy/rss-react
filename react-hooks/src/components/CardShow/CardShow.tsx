@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ContextCard } from '../../service/context';
+import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux';
+
 import './cardShow.css';
 
-const CardShow = () => {
-  const { card } = useContext(ContextCard);
+const CardShow: FC = () => {
+  const { card } = useAppSelector((state) => state.cardReducer);
   const { id } = useParams();
 
   return (

@@ -1,15 +1,18 @@
 import React, { Dispatch, FC, useContext, useReducer } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { Context } from '../service/context';
 import { initialCardState } from '../service/reducers/cardReducer';
 import reducer, { ActionType, ActionTypes, initialState } from '../service/reducers/reducer';
+import { valueSlice } from '../store/reducers/ValueSlice';
 
 const SortCard: FC = () => {
-  const { status, dispatch } = useContext(Context);
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.valueSlice.status);
   const getStatus = (eve: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>) => {
-    if (dispatch) {
-      dispatch({ type: ActionTypes.SET_STATUS, payload: eve.currentTarget.innerText });
-    }
+    eve.preventDefault();
+    dispatch(valueSlice.actions.setStatus(eve.currentTarget.innerText));
   };
+  console.log(status);
 
   return (
     <div className=" d-flex justify-content-center">

@@ -1,7 +1,9 @@
 import React, { Component, FC, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/redux';
 import { Context } from '../../service/context';
 import { ActionTypes } from '../../service/reducers/reducer';
+import { valueSlice } from '../../store/reducers/ValueSlice';
 import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
@@ -16,7 +18,7 @@ interface CardState {
 
 const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
   const [cardLike, setCardLike] = useState(0);
-  const { back, dispatch } = useContext(Context);
+  const dispatch = useAppDispatch();
   const openCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
   };
@@ -38,9 +40,7 @@ const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
             src={image}
             className="card-img-top"
             onClick={() => {
-              if (dispatch) {
-                dispatch({ type: ActionTypes.SET_BACK_BTN, payload: true });
-              }
+              dispatch(valueSlice.actions.setBack(true));
             }}
           />
         </Link>
