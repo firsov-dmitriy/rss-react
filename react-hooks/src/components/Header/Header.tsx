@@ -26,6 +26,8 @@ const Header: FC<HeaderProps> = ({ getValue, onSubmit, showBurgerMenu }) => {
         <NavLink
           onClick={(eve) => {
             goBack(eve);
+
+            navigate('/');
           }}
           className="navbar-brand"
           to={'/'}

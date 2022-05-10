@@ -1,5 +1,4 @@
 import React, { FC, useContext, useState } from 'react';
-import { Context, ContextCard } from '../service/context';
 
 type AboutState = {
   name: string;

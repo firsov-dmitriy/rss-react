@@ -1,12 +1,14 @@
-import React, { useReducer, useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import reducer, { ActionTypes, initialState } from '../service/reducers/reducer';
 import CardPerson from './CardPerson';
 import ErrorForm from './ErrorForm';
 import { personType } from '../types/types';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { valueSlice } from '../store/reducers/ValueSlice';
 
 const FormNow = () => {
-  const [{ person }, dispatch] = useReducer(reducer, initialState);
+  const { person } = useAppSelector((state) => state.valueSlice);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -19,14 +21,12 @@ const FormNow = () => {
     reader.readAsDataURL(imgRef);
 
     reader.onload = () => {
-      dispatch({
-        type: ActionTypes.SET_FORM,
-        payload: { ...data, url: reader.result?.toString() },
-      });
+      dispatch(valueSlice.actions.setPerson({ ...data, url: reader.result?.toString() }));
 
       reset();
     };
   };
+  console.log(person);
 
   return (
     <>

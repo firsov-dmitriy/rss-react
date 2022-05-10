@@ -7,7 +7,7 @@ export interface CardState {
   error: null | string;
   limit: number;
   loading: boolean;
-  dispatchCard?: Dispatch<CardAction> | undefined;
+  // dispatchCard?: Dispatch<CardAction> | undefined;
 }
 
 export enum CardActionTypes {

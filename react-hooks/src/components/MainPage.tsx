@@ -1,32 +1,30 @@
-import React, { FC, useContext, useEffect, useReducer, useState } from 'react';
-import { Context, ContextCard } from '../service/context';
-
+import React, { FC, useContext, useState } from 'react';
+// import { Context } from '../service/context';
 import CardList from './CardList/CardList';
-
 import { dataChatacters } from '../types/types';
-
 import SortCard from './SortCard';
 import Pagination from './Pagination';
-import { ActionTypes } from '../service/reducers/reducer';
-import { useAppSelector } from '../hooks/redux';
+// import { ActionTypes } from '../service/reducers/reducer';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { valueSlice } from '../store/reducers/ValueSlice';
 
 interface MainPageProps {
   submit: boolean;
 }
 
-const MainPage: FC<MainPageProps> = ({ submit }) => {
+const MainPage: FC<MainPageProps> = () => {
   const [idChar, setIdChar] = useState<number | null | string>(0);
-  const { valueSerch, status, dispatch } = useContext(Context);
+  // const { valueSerch, status, dispatch } = useContext(Context);
   const { card, loading } = useAppSelector((state) => state.cardReducer);
   const [char, setChar] = useState<dataChatacters>();
+  const dispatch = useAppDispatch();
+  const { search, status } = useAppSelector((state) => state.valueSlice);
 
   const getIdCard = (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const num = parseInt(eve.currentTarget.getAttribute('data-id') + '');
     setChar(card[num]);
     setIdChar(num);
-    if (dispatch) {
-      dispatch({ type: ActionTypes.SET_PARAM_ID, payload: num });
-    }
+    dispatch(valueSlice.actions.setParam(num));
   };
 
   if (loading) {
@@ -42,7 +40,7 @@ const MainPage: FC<MainPageProps> = ({ submit }) => {
   return (
     <>
       <SortCard />
-      <CardList getIdCard={getIdCard} data={card} valueSerch={valueSerch} />
+      <CardList getIdCard={getIdCard} data={card} valueSerch={search} />
       <Pagination />
     </>
   );

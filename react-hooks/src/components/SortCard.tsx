@@ -1,8 +1,6 @@
-import React, { Dispatch, FC, useContext, useReducer } from 'react';
+import React, { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { Context } from '../service/context';
-import { initialCardState } from '../service/reducers/cardReducer';
-import reducer, { ActionType, ActionTypes, initialState } from '../service/reducers/reducer';
+
 import { valueSlice } from '../store/reducers/ValueSlice';
 
 const SortCard: FC = () => {
@@ -12,7 +10,6 @@ const SortCard: FC = () => {
     eve.preventDefault();
     dispatch(valueSlice.actions.setStatus(eve.currentTarget.innerText));
   };
-  console.log(status);
 
   return (
     <div className=" d-flex justify-content-center">

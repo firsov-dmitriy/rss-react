@@ -1,14 +1,13 @@
-import React, { Component, FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/redux';
-import { Context } from '../../service/context';
-import { ActionTypes } from '../../service/reducers/reducer';
+
 import { valueSlice } from '../../store/reducers/ValueSlice';
 import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
   dataId: number;
-  // onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+
   getIdCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -30,11 +29,7 @@ const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
         openCard(e);
       }}
     >
-      <div
-      // onClick={($event) => {
-      //   this.props.onShowModalCard($event);
-      // }}
-      >
+      <div>
         <Link to={`/card/${dataId}`}>
           <img
             src={image}

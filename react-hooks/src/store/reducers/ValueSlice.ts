@@ -10,7 +10,7 @@ interface ValueType {
   };
   back: boolean;
 }
-export const initialState: ValueType = {
+export const initialValueState: ValueType = {
   search: '',
   person: [],
   status: '',
@@ -22,7 +22,7 @@ export const initialState: ValueType = {
 
 export const valueSlice = createSlice({
   name: 'value',
-  initialState,
+  initialState: initialValueState,
   reducers: {
     setSearch(state, action: PayloadAction<string>) {
       state.search = action.payload;
@@ -35,6 +35,9 @@ export const valueSlice = createSlice({
     },
     setBack(state, action: PayloadAction<boolean>) {
       state.back = action.payload;
+    },
+    setPerson(state, action: PayloadAction<personType>) {
+      return { ...state, person: [...state.person, action.payload] };
     },
   },
 });
