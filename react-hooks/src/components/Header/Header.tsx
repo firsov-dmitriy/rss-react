@@ -1,7 +1,7 @@
-import React, { Component, FC, useContext } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Context } from '../../service/context';
-import { ActionTypes } from '../../service/reducers/reducer';
+import React, { FC } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { valueSlice } from '../../store/reducers/ValueSlice';
 import SearchBar from '../SearchBar';
 import './header.css';
 interface HeaderProps {
@@ -12,17 +12,22 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ getValue, onSubmit, showBurgerMenu }) => {
   const navigate = useNavigate();
-  const goBack = () => navigate(-1);
-  const { back, dispatch } = useContext(Context);
+  const goBackLink = () => navigate(-1);
+  const dispatch = useAppDispatch();
+  const { back } = useAppSelector((state) => state.valueSlice);
+  const goBack = (eve: React.MouseEvent) => {
+    eve.preventDefault();
+    dispatch(valueSlice.actions.setBack(false));
+  };
 
   return (
     <nav className={`navbar navbar-expand-lg navbar-light bg-light `}>
       <div className="container-fluid">
         <NavLink
           onClick={(eve) => {
-            if (dispatch) {
-              dispatch({ type: ActionTypes.SET_BACK_BTN, payload: false });
-            }
+            goBack(eve);
+
+            navigate('/');
           }}
           className="navbar-brand"
           to={'/'}
@@ -45,9 +50,7 @@ const Header: FC<HeaderProps> = ({ getValue, onSubmit, showBurgerMenu }) => {
           <nav className="navbar navbar-light bg-light">
             <ul
               onClick={(eve) => {
-                if (dispatch) {
-                  dispatch({ type: ActionTypes.SET_BACK_BTN, payload: false });
-                }
+                goBack(eve);
               }}
               className=" navbar-nav me-auto mb-2 mb-lg-0"
             >
@@ -77,10 +80,8 @@ const Header: FC<HeaderProps> = ({ getValue, onSubmit, showBurgerMenu }) => {
           style={{ width: '100px' }}
           type="button"
           onClick={(eve) => {
-            if (dispatch) {
-              dispatch({ type: ActionTypes.SET_BACK_BTN, payload: false });
-            }
-            goBack();
+            goBack(eve);
+            goBackLink();
           }}
           className="btn btn-success"
         >

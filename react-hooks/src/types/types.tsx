@@ -20,6 +20,15 @@ export interface selectType {
   id: number;
   city: string;
 }
+export interface dataFetch {
+  info: {
+    count: number;
+    next: string;
+    pages: number;
+    prev: null | string;
+  };
+  results: dataChatacters[];
+}
 
 export interface dataChatacters {
   id?: number;

@@ -9,12 +9,12 @@ export default class Persona {
   checked: boolean | undefined;
   promo: boolean | undefined;
   buttonWork: number | undefined;
-  constructor({ name, secName, select, date, image, checked, promo }: personType) {
+  constructor({ name, secName, select, date, checked, promo }: personType) {
     this.name = name;
     this.secName = secName;
     this.select = select;
     this.date = date;
-    this.image = image;
+
     this.checked = checked;
     this.promo = promo;
   }

@@ -11,7 +11,6 @@ const Layout: FC<LayoutProps> = ({ getValue, onSubmit, showBurgerMenu }) => {
     <>
       <Header getValue={getValue} onSubmit={onSubmit} showBurgerMenu={showBurgerMenu} />
       <Outlet />
-      <footer>2022</footer>
     </>
   );
 };

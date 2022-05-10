@@ -1,12 +1,13 @@
-import React, { Component, FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Context } from '../../service/context';
-import { ActionTypes } from '../../service/reducers/reducer';
+import { useAppDispatch } from '../../hooks/redux';
+
+import { valueSlice } from '../../store/reducers/ValueSlice';
 import { dataChatacters } from '../../types/types';
 import './card.css';
 interface CardProps extends dataChatacters {
   dataId: number;
-  // onShowModalCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+
   getIdCard: (eve: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -16,7 +17,7 @@ interface CardState {
 
 const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
   const [cardLike, setCardLike] = useState(0);
-  const { back, dispatch } = useContext(Context);
+  const dispatch = useAppDispatch();
   const openCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
   };
@@ -28,19 +29,13 @@ const Card: FC<CardProps> = ({ getIdCard, dataId, image, name, status }) => {
         openCard(e);
       }}
     >
-      <div
-      // onClick={($event) => {
-      //   this.props.onShowModalCard($event);
-      // }}
-      >
+      <div>
         <Link to={`/card/${dataId}`}>
           <img
             src={image}
             className="card-img-top"
             onClick={() => {
-              if (dispatch) {
-                dispatch({ type: ActionTypes.SET_BACK_BTN, payload: true });
-              }
+              dispatch(valueSlice.actions.setBack(true));
             }}
           />
         </Link>
