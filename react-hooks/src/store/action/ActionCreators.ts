@@ -10,7 +10,7 @@ export const fetchUsers =
     try {
       dispatch(cardSlice.actions.cardFetching());
       const response = await axios.get<dataFetch>(
-        `https://rickandmortyapi.com/api/character/${name !== '' ? '?name=' + name : ''}${
+        `https://rickandmortyapi.com/api/character/?${name !== '' ? 'name=' + name : ''}${
           status !== '' ? '&status=' + status : ''
         }`,
         {

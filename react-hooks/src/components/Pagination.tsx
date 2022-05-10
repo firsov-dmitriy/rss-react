@@ -9,6 +9,7 @@ const Pagination = () => {
   const dispatch = useAppDispatch();
   const setPage = (eve: React.MouseEvent, num: number) => {
     eve.preventDefault();
+
     dispatch(changePage(num));
   };
 
